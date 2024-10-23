@@ -1,0 +1,99 @@
+---
+title: "Laporan Tahunan Harga Emas"
+author: "Heinz Metrosan Donradt S"
+format: 
+    html: 
+      toc: true
+execute: 
+  echo: false
+  warning: false
+jupyter: python3
+---
+
+<style>
+p {
+  text-align: justify;
+}
+</style>
+
+# SANGGAHAN DAN BATASAN TANGGUNG JAWAB
+
+Laporan ini memuat pernyataan mengenai harga penjualan emas tahunan, proyeksi pasar, kebijakan, rencana, strategi, serta tujuan yang digolongkan sebagai pernyataan ke depan dalam pelaksanaan perundang-undangan yang berlaku, kecuali hal-hal yang bersifat historis. Pernyataan-pernyataan tersebut memiliki prospek risiko, ketidakpastian, serta dapat mengakibatkan perkembangan aktual secara material berbeda dari yang dilaporkan.
+
+Pernyataan-pernyataan prospektif dalam Laporan ini dibuat berdasarkan berbagai asumsi mengenai kondisi terkini dan kondisi mendatang serta lingkungan pasar di mana harga emas diperdagangkan. Perusahaan tidak menjamin bahwa dokumen-dokumen yang telah dipastikan keabsahannya akan membawa hasil-hasil tertentu sesuai harapan.
+
+\newpage
+
+# PENJUALAN TAHUNAN
+
+**Total Penjualan Keseluruhan**
+
+```{python}
+# import library
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+pd.options.display.float_format = '{:,.2f}'.format
+
+# membaca data
+price = pd.read_csv("data/annual_gold.csv")
+```
+
+```{python}
+# mengganti nama kolom
+price.columns = ['Date', 'Price']
+```
+
+```{python}
+# mengubah tipe data
+price['Date'] = pd.to_datetime(price["Date"])
+```
+
+```{python}
+# menambahkan kolom tahun dan quarter
+price["Year"] = price["Date"].dt.year 
+```
+
+```{python}
+perbandingan_persentase_harga = round(abs(((price["Price"].iloc[-1] - price["Price"].iloc[0]) / price["Price"].iloc[0]) * 100), 2)     
+```
+ 
+
+```{python}
+tahun_sekarang =  price.iloc[-1, 2]
+tahun_sebelum =  price.iloc[0,2]
+```
+
+
+```{python}
+total_price_terbaru =  price.iloc[-1, 1]
+total_price_sebelumnya =  price.iloc[0, 1]
+```
+
+
+Selama tahun `{python} tahun_sekarang`, harga emas tercatat sebanyak `{python} total_price_terbaru` atau `{python} "bertumbuh" if total_price_terbaru > total_price_sebelumnya else "terkoreksi"` sebesar `{python} perbandingan_persentase_harga`% dibandingkan dengan `{python} tahun_sebelum` . 
+ 
+Maka dari itu keseimpulan hasil penjualan pada tahun `{python} tahun_sekarang`, menunjukan 
+`{python} "pertumbuhan dari segi harga" if (total_price_terbaru > total_price_sebelumnya)  else ("tidak mengalami perubahan dari segi harga" if (total_price_terbaru == total_price_sebelumnya)   else "koreksi baik dari segi harga")`.
+```{python}
+price
+```
+
+```{python}
+# Membuat visualisasi perbandingan harga emas per tahun
+price.plot(kind="line", x="Year", y="Price", legend=False)
+plt.title("Perbandingan Harga Emas Tahun 1950-2019")
+plt.xlabel("Tahun")
+plt.ylabel("Harga")
+plt.show()
+```
+ 
+ 
+
+# PENUTUPAN
+
+Laporan ini menyajikan analisis komprehensif tentang pergerakan harga emas selama periode 1950 hingga 2019. Dari data yang terkumpul, kita dapat melihat tren fluktuasi harga emas, baik secara tahunan maupun berdasarkan kuartal, yang dipengaruhi oleh berbagai faktor ekonomi global. Informasi ini sangat berharga dalam memahami stabilitas nilai emas sebagai salah satu instrumen investasi jangka panjang.
+
+Dengan memahami pola pergerakan harga emas selama beberapa dekade terakhir, kita dapat merumuskan strategi investasi yang lebih bijaksana dan terarah. Pemahaman terhadap faktor-faktor yang mempengaruhi harga emas, seperti inflasi, krisis ekonomi, dan kebijakan moneter, sangat penting untuk menghadapi tantangan di masa depan.
+
+Keberhasilan dalam memanfaatkan informasi ini tidak hanya bergantung pada data yang ada, tetapi juga pada kemampuan kita untuk menganalisis dinamika pasar dan melakukan penyesuaian yang tepat sesuai dengan kondisi ekonomi yang terus berubah. Kolaborasi yang baik antar berbagai pihak dalam pengambilan keputusan akan menjadi kunci utama dalam mencapai hasil yang optimal di masa mendatang.
